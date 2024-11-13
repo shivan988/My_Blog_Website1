@@ -20,54 +20,58 @@
   </div>
 </header>
 
-<!-- Post Content -->
 <article>
-  <div class="container px-4 px-lg-5">
-    <div class="row gx-4 gx-lg-5 justify-content-center">
-      <div class="col-md-10 col-lg-8 col-xl-7">
-        {{ post.body|safe }}
-        <!--TODO: Only show Edit Post button if user id is 1 (admin user) -->
-        {% if current_user.id == 1 %}
-        <div class="d-flex justify-content-end mb-4">
-          <a
-            class="btn btn-primary float-right"
-            href="{{url_for('edit_post', post_id=post.id)}}"
-            >Edit Post</a
-          >
-        </div>
-        {% endif %}
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <!-- Post Body -->
+                <div class="post-body mb-4">
+                    {{ post.body | safe }}
+                </div>
 
-        <!-- Comments Area -->
-        <!-- TODO: Add a CKEditor for commenting below -->
-        {{ render_form(form) }}
-        {{ ckeditor.load()}}
-        <div class="comment">
-          {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        {% for message in messages %}
-        <p class="flash">{{ message }}</p>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-          <!-- TODO: Show all the comments on a post -->
-          {%for comment in post.comments%}
-          <ul class="commentList">
-            <li>
-              <div class="commenterImage">
-                <img src="{{ 'zzz.sochi@gmail.com' | gravatar }}" />
-              </div>
-              <div class="commentText">
+                <!-- Edit Post Button (Admin Only) -->
+                {% if current_user.id == 1 %}
+                <div class="d-flex justify-content-end mb-4">
+                    <a class="btn btn-primary" href="{{ url_for('edit_post', post_id=post.id) }}">Edit Post</a>
+                </div>
+                {% endif %}
 
-                <p>{{ comment.text|safe }}</p>
-                <span class="date sub-text">{{ comment.users_comments.name }}</span>
-              </div>
-            </li>
-          </ul>
-          {% endfor %}
+                <!-- Comments Area -->
+                <div class="comments-section mt-4">
+                    <h3>Comments</h3>
+
+                    <!-- Flash Messages for Comments -->
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <div class="alert alert-info" role="alert">
+                        {% for message in messages %}
+                        <p class="flash">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+
+                    <!-- Comment Form -->
+                    {{ render_form(form) }}
+                    {{ ckeditor.load() }}
+
+                    <!-- Display Comments -->
+                    <ul class="commentList mt-3 list-unstyled">
+                        {% for comment in post.comments %}
+                        <li class="media mb-4">
+                            <img src="{{ 'zzz.sochi@gmail.com' | gravatar }}" class="mr-3 rounded-circle" alt="{{ comment.users_comments.name }}" style="width: 50px; height: 50px;">
+                            <div class="media-body">
+                                <p>{{ comment.text | safe }}</p>
+                                <span class="date sub-text">{{ comment.users_comments.name }}</span>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </article>
+
 
 {% include "footer.html" %}

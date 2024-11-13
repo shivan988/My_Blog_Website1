@@ -268,7 +268,7 @@ def about():
 def contact():
     msg_sent = request.args.get("message")
     if request.method == "POST":
-        print("methos is post good")
+        print("method is post good it is working")
         if current_user.is_authenticated:
             print("user is authenticated")
             name = request.form.get('name')

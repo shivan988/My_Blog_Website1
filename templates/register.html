@@ -1,7 +1,7 @@
 {% from "bootstrap5/form.html" import render_form %} {% block content %} {%
 include "header.html" %}
 
-<!-- Page Header -->
+<!-- Page Header-->
 <header
   class="masthead"
   style="background-image: url('../static/assets/img/register-bg.jpg')"
@@ -30,7 +30,11 @@ include "header.html" %}
         {% endif %}
         {% endwith %}
         <!--TODO: render your registration form here-->
-        {{ render_form(form, novalidate=True) }}
+        <div class="registration-form bg-light p-4 rounded shadow-sm">
+                    <h2 class="text-center mb-4">Create Your Account</h2>
+                    <!-- Render your registration form here -->
+                    {{ render_form(form, novalidate=True) }}
+        </div>
       </div>
     </div>
   </div>
